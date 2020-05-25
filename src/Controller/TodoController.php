@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\TodoModel;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 class TodoController extends AbstractController
 {
@@ -44,7 +45,6 @@ class TodoController extends AbstractController
      */
     public function todoSetStatus($id, $status)
     {
-
     }
 
     /**
@@ -53,8 +53,17 @@ class TodoController extends AbstractController
      * @Route("/todo/add", name="todo_add", methods={"POST"})
      *
      */
-    public function todoAdd()
+    public function todoAdd(Request $request)
     {
+        // Notre intitulé de tâche est dans $_POST['task']
+        $task = $request->request->get('task');
+        dump($task);
 
+
+        // Ajout de la tâche
+        TodoModel::add($task);
+
+        // On redirige vers la liste
+        return $this->redirectToRoute('todo_list');
     }
 }
